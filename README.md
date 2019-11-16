@@ -8,12 +8,14 @@ CaseInsensitiveStaticFile is an ASP.NET Core Middleware that enables case-insens
 
 * [Static files in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/static-files)
 
+[![NuGet](https://buildstats.info/nuget/CaseInsensitiveStaticFile)](http://www.nuget.org/packages/CaseInsensitiveStaticFile)
+
 If this project has been helpful for you and you want to support it, please consider [Buying me a coffee](https://www.buymeacoffee.com/YU0SqVyrR):coffee:
 
 Usage
 -------------------
 
-<details>
+<details open>
   <summary>Click to expand/collapse details...</summary>
 
 ```cs
