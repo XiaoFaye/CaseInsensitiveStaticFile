@@ -41,13 +41,13 @@ namespace CaseInsensitiveStaticFile
                 var segs = askingPath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
                 string localPath = string.Empty;
+                string redirectPath = string.Empty;
                 string requestFile = string.Empty;
                 string resultFile = string.Empty;
                 string resultFolder = string.Empty;
                 KeyValuePair<string, string> provider = new KeyValuePair<string, string>();
 
                 Console.WriteLine($"Asking path: {askingPath}");
-                Console.WriteLine($"Segs count: {segs.Length}");
 
                 if (segs.Length == 1)
                 {
@@ -64,14 +64,18 @@ namespace CaseInsensitiveStaticFile
                                 await _next(context);
                             else
                             {
-                                context.Response.Redirect($"/{Path.GetFileName(resultFolder)}");
+                                redirectPath = $"/{Path.GetFileName(resultFolder)}";
+                                context.Response.Redirect(redirectPath);
                                 return;
                             }
                         }
                         else
                         {
-                            context.Response.Redirect($"/{Path.GetFileName(resultFile)}");
-                            return;
+                            redirectPath = $"/{Path.GetFileName(resultFile)}";
+                            if (redirectPath != askingPath)
+                                context.Response.Redirect(redirectPath);
+                            else
+                                await _next(context);
                         }
                     }
                     else
@@ -102,14 +106,19 @@ namespace CaseInsensitiveStaticFile
                                     break;
                                 else
                                 {
-                                    context.Response.Redirect($"{provider.Key}/{resultFolder.Replace(provider.Value, "").TrimStart(Path.DirectorySeparatorChar)}");
+                                    redirectPath = $"{provider.Key}/{resultFolder.Replace(provider.Value, "").TrimStart(Path.DirectorySeparatorChar)}";
+                                    context.Response.Redirect(redirectPath);
                                     return;
                                 }
                             }
                             else
                             {
-                                context.Response.Redirect($"{provider.Key}/{resultFile.Replace(provider.Value, "").TrimStart(Path.DirectorySeparatorChar)}");
-                                return;
+                                redirectPath = $"{provider.Key}/{resultFile.Replace(provider.Value, "").TrimStart(Path.DirectorySeparatorChar)}";
+                                if (redirectPath != askingPath)
+                                {
+                                    context.Response.Redirect(redirectPath);
+                                    return;
+                                }
                             }
                         }
                         else
